@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { Diet } = require("../db");
+const { Diet, Recipe } = require("../db");
 const { initializeDiet, initializeRecipes } = require("./middlewares/utility");
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -18,13 +18,18 @@ router.get("/diets", async (req, res) => {
 });
 
 router.get("/initialize", async (req, res) => {
+  const trigger = await Recipe.findOne();
+  if (trigger)
+    return res
+      .status(202)
+      .json({ msg: "Database has already been initialized" });
   try {
     await initializeDiet();
     await initializeRecipes();
     res.status(201).json({ msg: "Database created successfully" });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ msg: "Failed to create Diets database" });
+    res.status(400).json({ msg: "Failed to create database" });
   }
 });
 

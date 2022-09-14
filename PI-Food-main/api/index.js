@@ -19,10 +19,6 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
-const { sequelize } = require("./src/db");
-require("./src/models/Diet");
-require("./src/models/Recipe");
-require("./src/models/Recipe_Diet");
 
 const PORT = 3000;
 // Syncing all the models at once.
@@ -33,7 +29,7 @@ const PORT = 3000;
 // });
 async function main() {
   try {
-    await sequelize.sync({ force: false });
+    await conn.sync({ force: false });
     server.listen(PORT);
     console.log("Server listening in port", PORT);
   } catch (error) {

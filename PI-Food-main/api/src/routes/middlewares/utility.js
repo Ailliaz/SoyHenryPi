@@ -72,13 +72,18 @@ function stepByStep(array) {
 }
 
 function createRecipe(body) {
-  const { name, summary, healthScore, step } = body;
-  return Recipe.create({
+  const { name, summary, healthScore, image, diets, analyzedInstructions } =
+    body;
+  console.log(diets);
+  const recipe = Recipe.create({
     name: name,
     summary: summary,
     healthScore: healthScore,
-    steps: JSON.stringify(step),
+    steps: JSON.stringify(stepByStep(analyzedInstructions)),
+    image: image,
   });
+  createRelationship(name, diets);
+  return recipe;
 }
 
 async function initializeRecipes() {
@@ -87,29 +92,24 @@ async function initializeRecipes() {
   const recipes = data.results;
   const newRecipes = recipes.map((recipe) => {
     if (recipe.analyzedInstructions.length > 0)
-      return (
-        {
-          name: recipe.title,
-          summary: recipe.summary,
-          healthScore: recipe.healthScore,
-          steps: JSON.stringify(stepByStep(recipe.analyzedInstructions)),
-          image: recipe.image,
-        },
-        createRelationship(recipe.title, recipe.diets)
-      );
+      return {
+        name: recipe.title,
+        summary: recipe.summary,
+        healthScore: recipe.healthScore,
+        steps: JSON.stringify(stepByStep(recipe.analyzedInstructions)),
+        image: recipe.image,
+      };
     else
-      return (
-        {
-          name: recipe.title,
-          summary: recipe.summary,
-          healthScore: recipe.healthScore,
-          steps: "",
-          image: recipe.image,
-        },
-        createRelationship(recipe.title, recipe.diets)
-      );
+      return {
+        name: recipe.title,
+        summary: recipe.summary,
+        healthScore: recipe.healthScore,
+        steps: "",
+        image: recipe.image,
+      };
   });
   await Recipe.bulkCreate(newRecipes);
+  recipes.map((recipe) => createRelationship(recipe.title, recipe.diets));
 }
 
 async function createRelationship(name, diets) {
@@ -147,6 +147,14 @@ function dietSelector(str) {
   else if (str === "lacto ovo vegetarian") return "Lacto-Vegetarian";
 }
 
+function details(summary, healthScore, steps) {
+  let attributes = ["name"];
+  if (summary) attributes.push(summary);
+  if (healthScore) attributes.push(healthScore);
+  if (steps) attributes.push(steps);
+  return attributes;
+}
+
 module.exports = {
   validatePost,
   // searchByName,
@@ -154,4 +162,5 @@ module.exports = {
   createRecipe,
   initializeRecipes,
   initializeDiet,
+  details,
 };

@@ -5,7 +5,7 @@ const {
   validatePost,
   // searchByName,
   createRecipe,
-  saveRecipes,
+  details,
 } = require("./utility");
 
 router.get("/", async (req, res) => {
@@ -24,13 +24,30 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
+  const { summary, healthScore, steps } = req.query;
+  const attributes = details(summary, healthScore, steps);
+  console.log(attributes);
+  const recipe = await Recipe.findByPk(id, {
+    attributes: attributes,
+    include: Diet,
+  });
+  if (!recipe)
+    return res
+      .status(400)
+      .json({ msg: "No recipe was found that matched that id" });
+  res.status(200).json(recipe);
 });
 
 router.post("/", async (req, res) => {
   const error = validatePost(req.body);
+  const find = await Recipe.findAll({ where: { name: req.body.name } });
   if (error) return res.status(404).json({ msg: "Data is missing" });
+  if (find.length > 0)
+    return res
+      .status(400)
+      .json({ msg: `${req.body.name} is already in the database` });
 
   try {
     const recipe = await createRecipe(req.body);
