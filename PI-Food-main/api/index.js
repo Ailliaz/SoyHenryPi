@@ -22,6 +22,7 @@ const { conn } = require("./src/db.js");
 const { sequelize } = require("./src/db");
 require("./src/models/Diet");
 require("./src/models/Recipe");
+require("./src/models/Recipe_Diet");
 
 const PORT = 3000;
 // Syncing all the models at once.

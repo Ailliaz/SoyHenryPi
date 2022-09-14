@@ -1,11 +1,13 @@
 const fetch = require("node-fetch");
-const { Recipe, Diet } = require("../../db");
+const { Recipe, Diet, Op } = require("../../db");
+const Recipe_Diet = require("../../models/Recipe_Diet");
 
 _EXTERNAL_URL = "https://run.mocky.io/v3/64dfef83-658b-47e0-a079-8e106c0bc34a";
 
 async function initializeDiet() {
   const diets = [
     "Gluten Free",
+    "Dairy Free",
     "Ketogenic",
     "Vegetarian",
     "Lacto-Vegetarian",
@@ -85,23 +87,64 @@ async function initializeRecipes() {
   const recipes = data.results;
   const newRecipes = recipes.map((recipe) => {
     if (recipe.analyzedInstructions.length > 0)
-      return {
-        name: recipe.title,
-        summary: recipe.summary,
-        healthScore: recipe.healthScore,
-        steps: JSON.stringify(stepByStep(recipe.analyzedInstructions)),
-        image: recipe.image,
-      };
+      return (
+        {
+          name: recipe.title,
+          summary: recipe.summary,
+          healthScore: recipe.healthScore,
+          steps: JSON.stringify(stepByStep(recipe.analyzedInstructions)),
+          image: recipe.image,
+        },
+        createRelationship(recipe.title, recipe.diets)
+      );
     else
-      return {
-        name: recipe.title,
-        summary: recipe.summary,
-        healthScore: recipe.healthScore,
-        steps: "",
-        image: recipe.image,
-      };
+      return (
+        {
+          name: recipe.title,
+          summary: recipe.summary,
+          healthScore: recipe.healthScore,
+          steps: "",
+          image: recipe.image,
+        },
+        createRelationship(recipe.title, recipe.diets)
+      );
   });
   await Recipe.bulkCreate(newRecipes);
+}
+
+async function createRelationship(name, diets) {
+  const recipe = await Recipe.findOne({ where: { name: name } });
+  let newDiets = diets.map((diet) => {
+    return dietSelector(diet);
+  });
+  if (newDiets.find((element) => element === "Lacto-Vegetarian")) {
+    newDiets.push("Vegetarian");
+    newDiets.push("Ovo-Vegetarian");
+  }
+  if (
+    newDiets.find((element) => element === "Vegan") &&
+    !newDiets.find((element) => element === "Vegetarian")
+  ) {
+    newDiets.push("Vegetarian");
+  }
+  const array = newDiets.map((diet) => {
+    return { name: diet };
+  });
+  const dietsdb = await Diet.findAll({ where: { [Op.or]: array } });
+  await recipe.addDiet(dietsdb, { through: Recipe_Diet });
+}
+
+function dietSelector(str) {
+  if (str === "gluten free") return "Gluten Free";
+  else if (str === "dairy free") return "Dairy Free";
+  else if (str === "vegan") return "Vegan";
+  else if (str === "primal") return "Primal";
+  else if (str === "ketogenic") return "Ketogenic";
+  else if (str === "fodmap friendly") return "low FODMAP";
+  else if (str === "paleolithic") return "Paleo";
+  else if (str === "whole 30") return "Whole 30";
+  else if (str === "pescatarian") return "Pescetarian";
+  else if (str === "lacto ovo vegetarian") return "Lacto-Vegetarian";
 }
 
 module.exports = {
