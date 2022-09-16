@@ -74,15 +74,16 @@ function stepByStep(array) {
 function createRecipe(body) {
   const { name, summary, healthScore, image, diets, analyzedInstructions } =
     body;
-  console.log(diets);
   const recipe = Recipe.create({
     name: name,
     summary: summary,
     healthScore: healthScore,
     steps: JSON.stringify(stepByStep(analyzedInstructions)),
     image: image,
+  }).catch((err) => {
+    console.log(err);
+    throw new Error(err);
   });
-  createRelationship(name, diets);
   return recipe;
 }
 
@@ -132,6 +133,7 @@ async function createRelationship(name, diets) {
   });
   const dietsdb = await Diet.findAll({ where: { [Op.or]: array } });
   await recipe.addDiet(dietsdb, { through: Recipe_Diet });
+  return;
 }
 
 function dietSelector(str) {
@@ -147,8 +149,9 @@ function dietSelector(str) {
   else if (str === "lacto ovo vegetarian") return "Lacto-Vegetarian";
 }
 
-function details(summary, healthScore, steps) {
-  let attributes = ["name"];
+function details(summary, healthScore, steps, image) {
+  let attributes = ["id", "name"];
+  if (image) attributes.push(image);
   if (summary) attributes.push(summary);
   if (healthScore) attributes.push(healthScore);
   if (steps) attributes.push(steps);
@@ -163,4 +166,5 @@ module.exports = {
   initializeRecipes,
   initializeDiet,
   details,
+  createRelationship,
 };
