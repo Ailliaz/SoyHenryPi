@@ -34,13 +34,16 @@ img {
   display: flex;
   justify-content: center;
   margin-bottom: 7px;
+  font-size: 15px;
 }
 .image {
   width: 300px;
   margin: 5px;
+  margin-bottom: 10px;
 }
 
 .name {
   inline-size: 150px;
   overflow-wrap: normal;
+  font-size: 20px;
 }

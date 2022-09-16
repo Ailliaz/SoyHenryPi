@@ -8,7 +8,7 @@ export default function RecipeCard(props) {
       <button className="card">
         <img src={props.recipe.image} alt="recipe" class="image" />
         <div>
-          <p>{props.recipe.id} </p>
+          {/* <p>{props.recipe.id} </p> */}
           <span className="name">
             <strong>Name:</strong> {props.recipe.name}
           </span>
