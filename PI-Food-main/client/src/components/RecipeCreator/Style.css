@@ -50,9 +50,10 @@
 .checkbox {
   display: inline-block;
   margin: 5px;
-  background-color: rgb(245, 245, 245, 0.5);
-  border-color: rgb(245, 245, 245, 0.5);
+  background-color: rgb(162, 36, 240, 0.15);
+  border: transparent;
   width: max-content;
+  justify-self: center;
   border-radius: 8px;
   flex-direction: row;
 }

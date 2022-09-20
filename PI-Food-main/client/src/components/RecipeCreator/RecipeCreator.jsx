@@ -185,7 +185,7 @@ function CreateRecipe() {
           <h3 className="title">Diets</h3>
           <div className="checkboxes">
             <div className="checkbox">
-              <>Gluten Free</>
+              <> Gluten Free</>
               <input
                 type="checkbox"
                 name="diets"
@@ -194,7 +194,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Dairy Free</>
+              <> Dairy Free</>
               <input
                 type="checkbox"
                 name="diets"
@@ -203,7 +203,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Ketogenic</>
+              <> Ketogenic</>
               <input
                 type="checkbox"
                 name="diets"
@@ -212,7 +212,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Vegetarian</>
+              <> Vegetarian</>
               <input
                 type="checkbox"
                 name="diets"
@@ -221,7 +221,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Lacto-Ovo-Vegetarian</>
+              <> Lacto-Ovo-Vegetarian</>
               <input
                 type="checkbox"
                 name="diets"
@@ -230,7 +230,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Vegan</>
+              <> Vegan</>
               <input
                 type="checkbox"
                 name="diets"
@@ -239,7 +239,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Pescetarian</>
+              <> Pescetarian</>
               <input
                 type="checkbox"
                 name="diets"
@@ -248,7 +248,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Paleo</>
+              <> Paleo</>
               <input
                 type="checkbox"
                 name="diets"
@@ -257,7 +257,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Primal</>
+              <> Primal</>
               <input
                 type="checkbox"
                 name="diets"
@@ -275,7 +275,7 @@ function CreateRecipe() {
               />
             </div>
             <div className="checkbox">
-              <>Whole30</>
+              <> Whole 30</>
               <input
                 type="checkbox"
                 name="diets"

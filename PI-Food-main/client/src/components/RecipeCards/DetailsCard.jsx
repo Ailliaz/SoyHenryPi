@@ -12,7 +12,7 @@ export default function CardsCompiler(recipes) {
   return (
     <div className="boxDetails">
       <div className="cardDetails">
-        <img src="" alt="recipe" class="image" />
+        <img src="" alt="recipe" className="image" />
         <div>
           <p>ID: </p>
           <div>
@@ -33,7 +33,7 @@ export default function CardsCompiler(recipes) {
         </div>
         <span className="columns">
           {/* {.map((d) => ( */}
-          <li class="diets"></li>
+          <li className="diets"></li>
           {/* ))} */}
         </span>
       </div>

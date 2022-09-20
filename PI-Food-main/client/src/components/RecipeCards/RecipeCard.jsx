@@ -14,7 +14,7 @@ export default function RecipeCard(props) {
   return (
     <div className="cardmargin" key={props.id}>
       <button className="card" onClick={routeChange}>
-        <img src={props.recipe.image} alt="recipe" class="image" />
+        <img src={props.recipe.image} alt="recipe" className="image" />
         <div>
           {/* <p>{props.recipe.id} </p> */}
           <span className="name">
@@ -26,7 +26,7 @@ export default function RecipeCard(props) {
         </div>
         <span className="columns">
           {diets.map((d) => (
-            <li class="diets">{d}</li>
+            <li className="diets">{d}</li>
           ))}
         </span>
       </button>

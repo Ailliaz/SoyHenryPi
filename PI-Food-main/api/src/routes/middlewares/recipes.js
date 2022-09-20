@@ -18,6 +18,9 @@ router.get("/", async (req, res) => {
   try {
     const recipes = await Recipe.findAll({
       where: { name: { [Op.iLike]: "%" + name + "%" } },
+      attributes: ["id", "name", "summary", "healthScore", "steps", "image"],
+      include: Diet,
+      order: [["id", "ASC"]],
     });
     if (recipes.length > 0) res.status(200).json(recipes);
     else res.status(200).json({ msg: `There was no match for ${name}` });
@@ -29,7 +32,6 @@ router.get("/", async (req, res) => {
 
 router.get("/get", async (req, res) => {
   let { prop, order } = req.query;
-  console.log(prop, order);
   if (!req.query.prop) {
     prop = "id";
   }
@@ -38,7 +40,7 @@ router.get("/get", async (req, res) => {
   }
   res.status(200).json(
     await Recipe.findAll({
-      attributes: ["id", "name", "image"],
+      attributes: ["id", "name", "summary", "healthScore", "steps", "image"],
       include: Diet,
       order: [[prop, order]],
     })
