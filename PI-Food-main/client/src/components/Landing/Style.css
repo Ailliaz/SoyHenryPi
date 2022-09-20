@@ -2,3 +2,20 @@
   display: none;
   visibility: hidden;
 } */
+.landing {
+  margin-top: 0;
+  background-image: url("../img/background.png");
+  /* background-size: contain; */
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 50vw;
+}
+
+.text {
+  /* display: flex; */
+  /* float: right; */
+  /* margin-right: 20; */
+  /* position: absolute; */
+  bottom: 0;
+  width: 200px;
+}

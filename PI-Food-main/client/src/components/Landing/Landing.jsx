@@ -3,14 +3,18 @@ import "./Style.css";
 
 function LandingPage() {
   return (
-    <div
-      className="landing"
-      style={{
-        backgroundImage: "url(" + require("../img/background.png") + ")",
-      }}
-    >
-      <a href="/home">Home</a>
+    <div className="landing">
       {/* <img src={backgroundImage} alt="icon" /> */}
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <h2 className="text">
+        This is a project for "Soy Henry" programing bootcamp for full-stack
+      </h2>
+      <p></p>
+      <a href="/home">Home</a>
     </div>
   );
 }

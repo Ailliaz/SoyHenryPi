@@ -1,17 +1,54 @@
 import "./Style.css";
-import CardsCompiler from "../RecipeCard/CardsCompiler";
-import { recipe } from "../db/db";
-import { useState } from "react";
+import CardsCompiler from "../RecipeCards/CardsCompiler";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Pagination from "./Pagination";
 
 function Home() {
-  const [recipeState, setRecipe] = useState([]);
+  const [recipe, setRecipe] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(12);
 
-  recipe.then((response) => setRecipe(response));
+  function handleChange(e) {
+    setRecipe(
+      posts.filter((o) =>
+        o.name.toLowerCase().includes(e.target.value.toLowerCase())
+      )
+    );
+  }
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      const res = await axios.get("http://localhost:3001/recipes/get");
+      setPosts(res.data);
+    };
+    fetchPost();
+  }, []);
+
+  // if (recipe) setRecipe(posts);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = recipe.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="text">
-      <input type="text" placeholder="Search..." className="search" />
-      <CardsCompiler recipe={recipeState} />
+    <div className="">
+      <input
+        type="text"
+        placeholder="Search..."
+        className="search"
+        on
+        onChange={handleChange}
+      />
+      <CardsCompiler recipe={currentPosts} />
+      <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={recipe.length}
+        paginate={paginate}
+      />
     </div>
   );
 }

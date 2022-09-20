@@ -7,7 +7,7 @@ export default function Nav() {
     <div class="navbar">
       <a href="/home">Home</a>
       <a href="/create">Create Recipe</a>
-      <div class="title">
+      <div class="titleHenry">
         <h1>Henry Food</h1>
       </div>
       <img className="img" src={cookingImage} alt="icon" />

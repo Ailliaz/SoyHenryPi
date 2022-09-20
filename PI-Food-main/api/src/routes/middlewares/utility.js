@@ -147,6 +147,7 @@ function dietSelector(str) {
   else if (str === "whole 30") return "Whole 30";
   else if (str === "pescatarian") return "Pescetarian";
   else if (str === "lacto ovo vegetarian") return "Lacto-Vegetarian";
+  else if (str === "vegetarian") return "Vegetarian";
 }
 
 function details(summary, healthScore, steps, image) {

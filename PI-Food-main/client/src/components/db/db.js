@@ -5,3 +5,13 @@ export const recipe = axios
   .then((response) => {
     return response.data;
   });
+
+export const details = axios
+  .get(
+    `http://localhost:3001/recipes/${window.location.href.substring(
+      window.location.href.lastIndexOf("/") + 1
+    )}`
+  )
+  .then((response) => {
+    return response.data;
+  });

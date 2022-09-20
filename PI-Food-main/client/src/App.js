@@ -6,6 +6,8 @@ import Nav from "./components/Nav/Nav";
 import Home from "./components/Home/Home";
 import CreateRecipe from "./components/RecipeCreator/RecipeCreator";
 import LandingPage from "./components/Landing/Landing";
+import RecipeDetails from "./components/RecipeDetail/RecipeDetail";
+import NoMatch from "./components/NoMatch/Nomatch";
 
 function App() {
   return (
@@ -19,8 +21,14 @@ function App() {
           <Route path="/create">
             <CreateRecipe />
           </Route>
+          <Route path="/recipe/:id">
+            <RecipeDetails />
+          </Route>
           <Route path="/">
             <LandingPage />
+          </Route>
+          <Route path="*">
+            <NoMatch />
           </Route>
         </Switch>
       </BrowserRouter>

@@ -47,9 +47,10 @@ router.get("/get", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
+  if (id / 1 !== NaN)
+    return res.status(400).json({ msh: "Id must be a number" });
   const { summary, healthScore, steps, image } = req.query;
   const attributes = details(summary, healthScore, steps, image);
-  console.log(attributes);
   const recipe = await Recipe.findByPk(id, {
     attributes: attributes,
     include: Diet,
@@ -76,7 +77,6 @@ router.post("/", (req, res) => {
       return res.status(201).json(returned);
     })
     .catch((err) => {
-      console.log(res);
       return res
         .status(400)
         .json({ msg: "Failed to creat a new recipe, bad data submited" });
