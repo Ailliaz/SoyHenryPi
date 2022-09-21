@@ -35,16 +35,22 @@ function CreateRecipe() {
 
   function handleClickSteps(e) {
     e.preventDefault();
-    setStep([...step, showstep]);
+    if (showstep !== "" && step.indexOf(showstep) === -1) {
+      setStep([...step, showstep]);
+    }
   }
 
   function handleChangeIngredients(e) {
     setShowIngredient(e.target.value);
   }
+  console.log(showIngedient);
+  console.log(ingredients);
 
   function handleClickIngredients(e) {
     e.preventDefault();
-    setIngredients([...ingredients, showIngedient]);
+    if (showIngedient !== "" && ingredients.indexOf(showIngedient) === -1) {
+      setIngredients([...ingredients, showIngedient]);
+    }
   }
 
   function handleChangeEquipment(e) {
@@ -53,8 +59,12 @@ function CreateRecipe() {
 
   function handleClickEquipment(e) {
     e.preventDefault();
-    setEquipment([...equipment, showEquipment]);
+    if (showEquipment !== "" && equipment.indexOf(showEquipment) === -1) {
+      setEquipment([...equipment, showEquipment]);
+    }
   }
+  console.log(showEquipment);
+  console.log(equipment);
 
   function handleChangeImage(e) {
     setImage(e.target.value);
@@ -77,38 +87,38 @@ function CreateRecipe() {
         "https://www.food4fuel.com/wp-content/uploads/woocommerce-placeholder-600x600.png"
       );
 
-    // axios
-    //   .post("http://localhost:3001/recipes", {
-    //     name: name,
-    //     summary: summary,
-    //     healthScore: healthScore.toString(),
-    //     analyzedInstructions: [
-    //       {
-    //         steps: [
-    //           { step: step, ingredients: ingredients, equipment: equipment },
-    //         ],
-    //       },
-    //     ],
-    //     image: image,
-    //     diets: diets,
-    //   })
-    //   .then((response) => console.log(response))
-    //   .catch((err) => console.log(err));
+    axios
+      .post("http://localhost:3001/recipes", {
+        name: name,
+        summary: summary,
+        healthScore: healthScore.toString(),
+        analyzedInstructions: [
+          {
+            steps: [
+              { step: step, ingredients: ingredients, equipment: equipment },
+            ],
+          },
+        ],
+        image: image,
+        diets: diets,
+      })
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
 
-    console.log({
-      name: name,
-      summary: summary,
-      healthScore: healthScore.toString(),
-      analyzedInstructions: [
-        {
-          steps: [
-            { step: step, ingredients: ingredients, equipment: equipment },
-          ],
-        },
-      ],
-      image: image,
-      diets: diets,
-    });
+    // console.log({
+    //   name: name,
+    //   summary: summary,
+    //   healthScore: healthScore.toString(),
+    //   analyzedInstructions: [
+    //     {
+    //       steps: [
+    //         { step: step, ingredients: ingredients, equipment: equipment },
+    //       ],
+    //     },
+    //   ],
+    //   image: image,
+    //   diets: diets,
+    // });
   }
 
   return (
@@ -135,9 +145,9 @@ function CreateRecipe() {
         <>
           {step.map((s) => {
             return (
-              <div>
-                <>{s.name}</>
-              </div>
+              <li key={s} className="createStep">
+                <>{s}</>
+              </li>
             );
           })}
           <input className="bar" type="text" onChange={handleChangeStep} />
@@ -147,13 +157,15 @@ function CreateRecipe() {
         </>
         <>
           <h3 className="title">Ingredients</h3>
-          {ingredients.map((i) => {
-            return (
-              <div>
-                <>{i.name}</>
-              </div>
-            );
-          })}
+          <span className="createItems">
+            {ingredients.map((i) => {
+              return (
+                <li key={i} className="items">
+                  {i}
+                </li>
+              );
+            })}
+          </span>
           <input
             className="bar"
             type="text"
@@ -165,13 +177,15 @@ function CreateRecipe() {
         </>
         <>
           <h3 className="title">Equipment Needed</h3>
-          {equipment.map((e) => {
-            return (
-              <div>
-                <>{e.name}</>
-              </div>
-            );
-          })}
+          <span className="createItems">
+            {equipment.map((e) => {
+              return (
+                <li key={e} className="items">
+                  <>{e}</>
+                </li>
+              );
+            })}
+          </span>
           <input className="bar" type="text" onChange={handleChangeEquipment} />
           <button className="addBtn" onClick={handleClickEquipment}>
             <strong>Add Equipment</strong>

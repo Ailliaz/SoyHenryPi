@@ -63,3 +63,20 @@
   grid-template-columns: auto auto;
   margin: auto;
 }
+
+.createItems {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.items {
+  margin: auto;
+
+  margin-bottom: 7px;
+  list-style-type: none;
+}
+
+.createStep {
+  margin-left: 5%;
+  margin-bottom: 7px;
+}

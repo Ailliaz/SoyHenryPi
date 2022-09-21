@@ -50,3 +50,23 @@ body {
   color: whitesmoke;
   border: transparent;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  margin-top: 150px;
+  margin-bottom: 150px;
+}
+
+.orderDropdown {
+  background-color: rgb(245, 245, 245, 0.5);
+  border-radius: 8px;
+  margin-left: 27%;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.dropdowns {
+  display: flex;
+  flex-direction: row;
+}

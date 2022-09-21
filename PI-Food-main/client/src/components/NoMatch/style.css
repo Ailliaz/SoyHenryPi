@@ -1,5 +1,6 @@
 .notFound {
-  position: absolute;
+  display: flex;
   justify-content: center;
-  font-size: 40px;
+  margin-top: 10%;
+  font-size: 30px;
 }

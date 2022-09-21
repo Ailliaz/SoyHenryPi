@@ -11,8 +11,15 @@ const {
 
 router.get("/", async (req, res) => {
   const { name } = req.query;
+  let { filter, order } = req.query;
   if (!name) {
     return res.status(404).json({ msg: "Name is needed" });
+  }
+  if (!req.query.prop) {
+    prop = "id";
+  }
+  if (!req.query.order) {
+    order = "ASC";
   }
 
   try {
@@ -20,20 +27,19 @@ router.get("/", async (req, res) => {
       where: { name: { [Op.iLike]: "%" + name + "%" } },
       attributes: ["id", "name", "summary", "healthScore", "steps", "image"],
       include: Diet,
-      order: [["id", "ASC"]],
+      order: [[filter || "id", order || "ASC"]],
     });
     if (recipes.length > 0) res.status(200).json(recipes);
     else res.status(200).json({ msg: `There was no match for ${name}` });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ msg: "Failed to do the search" });
   }
 });
 
 router.get("/get", async (req, res) => {
-  let { prop, order } = req.query;
-  if (!req.query.prop) {
-    prop = "id";
+  let { filter, order } = req.query;
+  if (!req.query.filter) {
+    filter = "id";
   }
   if (!req.query.order) {
     order = "ASC";
@@ -42,24 +48,32 @@ router.get("/get", async (req, res) => {
     await Recipe.findAll({
       attributes: ["id", "name", "summary", "healthScore", "steps", "image"],
       include: Diet,
-      order: [[prop, order]],
+      order: [[filter || "id", order || "ASC"]],
     })
   );
 });
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  if (id / 1 !== NaN)
-    return res.status(400).json({ msh: "Id must be a number" });
+  let { filter, order } = req.query;
+  if (!req.query.prop) {
+    filter = "id";
+  }
+  if (!req.query.order) {
+    order = "ASC";
+  }
+  if (id / 1 === NaN)
+    return res.status(400).json({ msg: "Id must be a number" });
   const { summary, healthScore, steps, image } = req.query;
   const attributes = details(summary, healthScore, steps, image);
   const recipe = await Recipe.findByPk(id, {
     attributes: attributes,
     include: Diet,
+    order: [[filter || "id", order || "ASC"]],
   });
   if (!recipe)
     return res
-      .status(400)
+      .status(404)
       .json({ msg: "No recipe was found that matched that id" });
   res.status(200).json(recipe);
 });

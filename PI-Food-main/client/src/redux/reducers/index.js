@@ -1,7 +1,6 @@
-import { GET_RECIPES, ALL_RECIPES } from "../actions";
-
 const initialState = {
   recipes: [],
+  id: [],
 };
 
 function getRecipes(state, payload) {
@@ -16,6 +15,10 @@ function allRecipes(state, payload) {
   return temp;
 }
 
+function addId(state, payload) {
+  return (state.id[0] = payload.id);
+}
+
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case "GET_RECIPES":
@@ -23,6 +26,9 @@ const rootReducer = (state = initialState, action) => {
 
     case "ALL_RECIPES":
       return allRecipes(state, action.payload);
+
+    case "ADD_ID":
+      return addId(state, action.payload);
 
     default:
       return state;

@@ -24,7 +24,7 @@ function App() {
           <Route path="/recipe/:id">
             <RecipeDetails />
           </Route>
-          <Route path="/">
+          <Route exact path="/">
             <LandingPage />
           </Route>
           <Route path="*">

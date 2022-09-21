@@ -1,11 +1,14 @@
 import React from "react";
 import "./Style.css";
 import { useHistory } from "react-router-dom";
+import { addId } from "../../redux/actions";
+import store from "../../redux/store";
 
 export default function RecipeCard(props) {
   const history = useHistory();
 
   const routeChange = () => {
+    store.dispatch(addId(`${props.recipe.id}`));
     let path = `/recipe/${props.recipe.id}`;
     history.push(path);
   };
@@ -16,11 +19,9 @@ export default function RecipeCard(props) {
       <button className="card" onClick={routeChange}>
         <img src={props.recipe.image} alt="recipe" className="image" />
         <div>
-          {/* <p>{props.recipe.id} </p> */}
-          <span className="name">
-            <strong>Name:</strong> {props.recipe.name}
-          </span>
+          <span className="name">{props.recipe.name}</span>
         </div>
+        <h3>Health Score: {props.recipe.healthScore}</h3>
         <div>
           <h3>Diets</h3>
         </div>

@@ -9,11 +9,18 @@ export const getRecipes = (name) => (dispatch) => {
     .then((data) => dispatch({ type: GET_RECIPES, payload: data }));
 };
 
-export const allRecipes = (prop, order) => (dispatch) => {
+export const allRecipes = () => (dispatch) => {
   return axios
-    .get(`http://localhost:3001/recipes/get?prop=${prop}&order=${order}`)
+    .get(`http://localhost:3001/recipes/get`)
     .then((response) => response.data)
     .then((data) => dispatch({ type: ALL_RECIPES, payload: data }));
 };
 
-export const getDetails = () => (dipatch) => {};
+export function addId(id) {
+  return {
+    type: "ADD_ID",
+    payload: {
+      id: id,
+    },
+  };
+}

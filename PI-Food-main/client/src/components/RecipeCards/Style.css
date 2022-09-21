@@ -60,3 +60,40 @@ img {
   grid-template-columns: auto / auto;
   width: 700px;
 }
+
+.detailsImage {
+  width: 500px;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.detailsName {
+  font-size: 30px;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.detailsSummary {
+  margin: 20px;
+}
+
+.detailsColumns {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.detailsDiets {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 7px;
+  font-size: 15px;
+}
+
+.noId {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+  font-size: 30px;
+  margin-bottom: 30px;
+}
