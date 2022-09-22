@@ -70,3 +70,20 @@ body {
   display: flex;
   flex-direction: row;
 }
+
+.checkboxWhite {
+  display: inline-block;
+  margin: 5px;
+  background-color: rgb(122, 30, 192, 0.3);
+  border: transparent;
+  width: max-content;
+  justify-self: center;
+  border-radius: 8px;
+  flex-direction: row;
+}
+
+.homeCheckbox {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}

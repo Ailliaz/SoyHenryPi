@@ -1,6 +1,6 @@
 import React from "react";
 import "./Style.css";
-const cookingImage = require("../img/cooking.png").default;
+const cookingImage = require("../img/soy-henry-logo.jpg").default;
 
 export default function Nav() {
   return (

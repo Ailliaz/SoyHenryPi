@@ -7,10 +7,12 @@ const {
   createRecipe,
   details,
   createRelationship,
+  filterByDiet,
 } = require("./utility");
 
 router.get("/", async (req, res) => {
-  const { name } = req.query;
+  console.log(req.query);
+  const { name, diet } = req.query;
   let { filter, order } = req.query;
   if (!name) {
     return res.status(404).json({ msg: "Name is needed" });
@@ -21,14 +23,14 @@ router.get("/", async (req, res) => {
   if (!req.query.order) {
     order = "ASC";
   }
-
+  let recipes = await Recipe.findAll({
+    where: { name: { [Op.iLike]: "%" + name + "%" } },
+    attributes: ["id", "name", "summary", "healthScore", "steps", "image"],
+    include: Diet,
+    order: [[filter || "id", order || "ASC"]],
+  });
+  if (diet) recipes = filterByDiet(recipes, diet);
   try {
-    const recipes = await Recipe.findAll({
-      where: { name: { [Op.iLike]: "%" + name + "%" } },
-      attributes: ["id", "name", "summary", "healthScore", "steps", "image"],
-      include: Diet,
-      order: [[filter || "id", order || "ASC"]],
-    });
     if (recipes.length > 0) res.status(200).json(recipes);
     else res.status(200).json({ msg: `There was no match for ${name}` });
   } catch (error) {
@@ -37,20 +39,20 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/get", async (req, res) => {
-  let { filter, order } = req.query;
+  let { filter, order, diet } = req.query;
   if (!req.query.filter) {
     filter = "id";
   }
   if (!req.query.order) {
     order = "ASC";
   }
-  res.status(200).json(
-    await Recipe.findAll({
-      attributes: ["id", "name", "summary", "healthScore", "steps", "image"],
-      include: Diet,
-      order: [[filter || "id", order || "ASC"]],
-    })
-  );
+  let recipes = await Recipe.findAll({
+    attributes: ["id", "name", "summary", "healthScore", "steps", "image"],
+    include: Diet,
+    order: [[filter || "id", order || "ASC"]],
+  });
+  if (diet) recipes = filterByDiet(recipes, diet);
+  res.status(200).json(recipes);
 });
 
 router.get("/:id", async (req, res) => {
@@ -64,8 +66,8 @@ router.get("/:id", async (req, res) => {
   }
   if (id / 1 === NaN)
     return res.status(400).json({ msg: "Id must be a number" });
-  const { summary, healthScore, steps, image } = req.query;
-  const attributes = details(summary, healthScore, steps, image);
+  const { summary, healthScore, steps, image, dishTypes } = req.query;
+  const attributes = details(summary, healthScore, steps, image, dishTypes);
   const recipe = await Recipe.findByPk(id, {
     attributes: attributes,
     include: Diet,

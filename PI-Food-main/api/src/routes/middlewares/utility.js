@@ -72,7 +72,7 @@ function stepByStep(array) {
 }
 
 function createRecipe(body) {
-  const { name, summary, healthScore, image, diets, analyzedInstructions } =
+  const { name, summary, healthScore, image, dishTypes, analyzedInstructions } =
     body;
   const recipe = Recipe.create({
     name: name,
@@ -80,6 +80,7 @@ function createRecipe(body) {
     healthScore: healthScore,
     steps: JSON.stringify(stepByStep(analyzedInstructions)),
     image: image,
+    dishTypes: dishTypes,
   }).catch((err) => {
     console.log(err);
     throw new Error(err);
@@ -99,6 +100,7 @@ async function initializeRecipes() {
         healthScore: recipe.healthScore,
         steps: JSON.stringify(stepByStep(recipe.analyzedInstructions)),
         image: recipe.image,
+        dishTypes: recipe.dishTypes,
       };
     else
       return {
@@ -107,6 +109,7 @@ async function initializeRecipes() {
         healthScore: recipe.healthScore,
         steps: "",
         image: recipe.image,
+        dishTypes: recipe.dishTypes,
       };
   });
   await Recipe.bulkCreate(newRecipes);
@@ -150,13 +153,30 @@ function dietSelector(str) {
   else if (str === "vegetarian") return "Vegetarian";
 }
 
-function details(summary, healthScore, steps, image) {
+function details(summary, healthScore, steps, image, dishTypes) {
   let attributes = ["id", "name"];
   if (image) attributes.push(image);
   if (summary) attributes.push(summary);
   if (healthScore) attributes.push(healthScore);
   if (steps) attributes.push(steps);
+  if (dishTypes) attributes.push(dishTypes);
   return attributes;
+}
+
+function filterByDiet(recipes, diet) {
+  const diets = diet.split("_");
+  const recipe = recipes.filter((diet) => check(diet.Diets, diets));
+  function check(data, diet) {
+    const comparison = data.map((d) => d.name);
+    const check = diet.map((d) => {
+      if (comparison.indexOf(d) !== -1) return true;
+    });
+    let checker = (arr) => arr.every((v) => v === true);
+    if (diet.sort().join() === comparison.sort().join()) return true;
+    else if (checker(check)) return true;
+    return false;
+  }
+  return recipe;
 }
 
 module.exports = {
@@ -168,4 +188,5 @@ module.exports = {
   initializeDiet,
   details,
   createRelationship,
+  filterByDiet,
 };

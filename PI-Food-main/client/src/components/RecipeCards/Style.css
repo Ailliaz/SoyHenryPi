@@ -4,10 +4,11 @@ img {
 
 .box {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: auto auto auto;
 }
 .cardmargin {
   display: flex;
+  justify-content: center;
 }
 .card {
   display: flex;
@@ -67,15 +68,26 @@ img {
   margin-bottom: 15px;
 }
 
+.nameBox {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
 .detailsName {
   font-size: 30px;
   margin: auto;
   margin-top: 15px;
   margin-bottom: 15px;
+  width: 550px;
 }
 
 .detailsSummary {
   margin: 20px;
+  text-align: justify;
+  background-color: rgb(162, 36, 240, 0.3);
+  border-radius: 8px;
+  padding: 10px;
 }
 
 .detailsColumns {
@@ -96,4 +108,31 @@ img {
   margin-top: 10%;
   font-size: 30px;
   margin-bottom: 30px;
+}
+
+.health {
+  display: flex;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.titleSteps {
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.steps {
+  margin: 20px;
+  text-align: justify;
+  background-color: rgb(162, 36, 240, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.detailsList {
+  margin-bottom: 7px;
+  font-size: 15px;
 }

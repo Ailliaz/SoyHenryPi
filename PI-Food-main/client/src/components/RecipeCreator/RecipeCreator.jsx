@@ -5,17 +5,17 @@ import "./Style.css";
 function CreateRecipe() {
   const [name, setName] = useState("");
   const [summary, setSummary] = useState("");
-  const [healthScore, setHealthScore] = useState(0);
+  const [healthScore, setHealthScore] = useState(1);
   const [step, setStep] = useState([]);
   const [showstep, setShowStep] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [showIngedient, setShowIngredient] = useState("");
   const [equipment, setEquipment] = useState([]);
   const [showEquipment, setShowEquipment] = useState("");
-  const [image, setImage] = useState(
-    "https://www.food4fuel.com/wp-content/uploads/woocommerce-placeholder-600x600.png"
-  );
+  const [image, setImage] = useState();
   const [diets, setDiets] = useState([]);
+  const [dishTypes, setDishTypes] = useState([]);
+  const [showDishTypes, setShowDishTypes] = useState("");
 
   function handleChangeName(e) {
     setName(e.target.value);
@@ -37,19 +37,34 @@ function CreateRecipe() {
     e.preventDefault();
     if (showstep !== "" && step.indexOf(showstep) === -1) {
       setStep([...step, showstep]);
+      setShowStep("");
+    }
+  }
+
+  function handleChangedishTypes(e) {
+    setShowDishTypes(e.target.value);
+  }
+
+  function handleClickdishTypes(e) {
+    e.preventDefault();
+    if (showDishTypes !== "" && dishTypes.indexOf(showDishTypes) === -1) {
+      setDishTypes([...dishTypes, showDishTypes]);
+      setShowDishTypes("");
     }
   }
 
   function handleChangeIngredients(e) {
     setShowIngredient(e.target.value);
   }
-  console.log(showIngedient);
-  console.log(ingredients);
 
   function handleClickIngredients(e) {
     e.preventDefault();
-    if (showIngedient !== "" && ingredients.indexOf(showIngedient) === -1) {
-      setIngredients([...ingredients, showIngedient]);
+    if (
+      showIngedient !== "" &&
+      ingredients.filter((item) => showIngedient === item.name).length === 0
+    ) {
+      setIngredients([...ingredients, { name: showIngedient }]);
+      setShowIngredient("");
     }
   }
 
@@ -59,12 +74,14 @@ function CreateRecipe() {
 
   function handleClickEquipment(e) {
     e.preventDefault();
-    if (showEquipment !== "" && equipment.indexOf(showEquipment) === -1) {
-      setEquipment([...equipment, showEquipment]);
+    if (
+      showEquipment !== "" &&
+      equipment.filter((item) => showEquipment === item.name).length === 0
+    ) {
+      setEquipment([...equipment, { name: showEquipment }]);
+      setShowEquipment("");
     }
   }
-  console.log(showEquipment);
-  console.log(equipment);
 
   function handleChangeImage(e) {
     setImage(e.target.value);
@@ -80,7 +97,10 @@ function CreateRecipe() {
 
   function handleClick(e) {
     e.preventDefault();
-    if (name === "" || summary === "") return;
+    if (name === "" || summary === "")
+      return alert("Name and summary are needed to create a new recipe");
+    if (healthScore > 100 || healthScore < 1)
+      return alert("Health score must be between 1 and 100");
 
     if (image === "")
       setImage(
@@ -92,6 +112,7 @@ function CreateRecipe() {
         name: name,
         summary: summary,
         healthScore: healthScore.toString(),
+        dishTypes: dishTypes,
         analyzedInstructions: [
           {
             steps: [
@@ -102,23 +123,13 @@ function CreateRecipe() {
         image: image,
         diets: diets,
       })
-      .then((response) => console.log(response))
+      .then((response) => alert("Recipe created successfully"))
       .catch((err) => console.log(err));
-
-    // console.log({
-    //   name: name,
-    //   summary: summary,
-    //   healthScore: healthScore.toString(),
-    //   analyzedInstructions: [
-    //     {
-    //       steps: [
-    //         { step: step, ingredients: ingredients, equipment: equipment },
-    //       ],
-    //     },
-    //   ],
-    //   image: image,
-    //   diets: diets,
-    // });
+    setName("");
+    setSummary("");
+    setDishTypes([]);
+    setHealthScore(1);
+    setImage("");
   }
 
   return (
@@ -127,30 +138,66 @@ function CreateRecipe() {
         <h1 className="mainTitle">Create New Recipe</h1>
         <>
           <h3 className="title">Name</h3>
-          <input className="bar" type="text" onChange={handleChangeName} />
+          <input
+            className="bar"
+            type="text"
+            value={name}
+            onChange={handleChangeName}
+          />
         </>
         <>
           <h3 className="title">Summary</h3>
-          <input className="bar" type="text" onChange={handleChangeSummary} />
+          <input
+            className="bar"
+            type="text"
+            value={summary}
+            onChange={handleChangeSummary}
+          />
         </>
         <>
           <h3 className="title">Health Score</h3>
           <input
             className="bar"
             type="number"
+            value={healthScore}
             onChange={handleChangeHealthScore}
           />
         </>
+        <h3 className="title">Dish Types</h3>
+        <span className="createItems">
+          {dishTypes.map((dish) => {
+            return (
+              <li key={dish + "dish"} className="items">
+                {dish}
+              </li>
+            );
+          })}
+        </span>
+        <input
+          className="bar"
+          type="text"
+          value={showDishTypes}
+          onChange={handleChangedishTypes}
+        />
+        <button className="addBtn" onClick={handleClickdishTypes}>
+          <strong>Add Ingredient</strong>
+        </button>
+
         <h3 className="title">Steps</h3>
         <>
           {step.map((s) => {
             return (
-              <li key={s} className="createStep">
+              <li key={s + "steps"} className="createStep">
                 <>{s}</>
               </li>
             );
           })}
-          <input className="bar" type="text" onChange={handleChangeStep} />
+          <input
+            className="bar"
+            type="text"
+            value={showstep}
+            onChange={handleChangeStep}
+          />
           <button className="addBtn" onClick={handleClickSteps}>
             <strong>Add Step</strong>
           </button>
@@ -160,8 +207,8 @@ function CreateRecipe() {
           <span className="createItems">
             {ingredients.map((i) => {
               return (
-                <li key={i} className="items">
-                  {i}
+                <li key={i.name + "ing"} className="items">
+                  {i.name}
                 </li>
               );
             })}
@@ -169,6 +216,7 @@ function CreateRecipe() {
           <input
             className="bar"
             type="text"
+            value={showIngedient}
             onChange={handleChangeIngredients}
           />
           <button className="addBtn" onClick={handleClickIngredients}>
@@ -180,20 +228,30 @@ function CreateRecipe() {
           <span className="createItems">
             {equipment.map((e) => {
               return (
-                <li key={e} className="items">
-                  <>{e}</>
+                <li key={e.name + "eq"} className="items">
+                  <>{e.name}</>
                 </li>
               );
             })}
           </span>
-          <input className="bar" type="text" onChange={handleChangeEquipment} />
+          <input
+            className="bar"
+            type="text"
+            value={showEquipment}
+            onChange={handleChangeEquipment}
+          />
           <button className="addBtn" onClick={handleClickEquipment}>
             <strong>Add Equipment</strong>
           </button>
         </>
         <>
           <h3 className="title">Image</h3>
-          <input className="bar" type="text" onChange={handleChangeImage} />
+          <input
+            className="bar"
+            type="text"
+            value={image}
+            onChange={handleChangeImage}
+          />
         </>
         <>
           <h3 className="title">Diets</h3>
