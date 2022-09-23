@@ -1,12 +1,14 @@
 import "./Style.css";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Pagination from "./Pagination";
 import Post from "./Post";
+import { searchRecipes } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.recipes);
   const [recipe, setRecipe] = useState("");
-  const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(9);
   const [loading, setLoading] = useState(false);
@@ -43,47 +45,10 @@ function Home() {
   }
 
   useEffect(() => {
-    let props = "";
-    if (filterValue !== "" && orderValue !== "")
-      props = "filter=" + filterValue + "&order=" + orderValue;
-    else if (filterValue !== "") props = "filter=" + filterValue;
-    else if (orderValue !== "") props = "order=" + orderValue;
-    let byDiet = "";
-    if (diets.length === 0) byDiet = "";
-    else byDiet = "diet=" + diets.join("_");
-
-    if (recipe === "") {
-      const fetchPost = async () => {
-        setLoading(true);
-        if (props !== "" && byDiet !== "") {
-          props = "?" + props;
-          byDiet = "&" + byDiet;
-        } else if (props !== "") props = "?" + props;
-        else if (byDiet !== "") byDiet = "?" + byDiet;
-        const res = await axios.get(
-          `http://localhost:3001/recipes/get${props}${byDiet}`
-        );
-        setPosts(res.data);
-        setLoading(false);
-      };
-      fetchPost();
-    } else {
-      const fetchPost = async () => {
-        setLoading(true);
-        if (props !== "" && byDiet !== "") {
-          props = "&" + props;
-          byDiet = "&" + byDiet;
-        } else if (props !== "") props = "&" + props;
-        else if (byDiet !== "") byDiet = "&" + byDiet;
-        const res = await axios.get(
-          `http://localhost:3001/recipes/?name=${recipe}${props}${byDiet}`
-        );
-        setPosts(res.data);
-        setLoading(false);
-      };
-      fetchPost();
-    }
-  }, [recipe, filterValue, orderValue, diets]);
+    setLoading(true);
+    dispatch(searchRecipes(recipe, orderValue, filterValue, diets));
+    setLoading(false);
+  }, [recipe, orderValue, filterValue, diets, dispatch]);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;

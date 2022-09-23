@@ -78,7 +78,7 @@ function createRecipe(body) {
     name: name,
     summary: summary,
     healthScore: healthScore,
-    steps: JSON.stringify(stepByStep(analyzedInstructions)),
+    steps: stepByStep(analyzedInstructions),
     image: image,
     dishTypes: dishTypes,
   }).catch((err) => {
@@ -98,7 +98,7 @@ async function initializeRecipes() {
         name: recipe.title,
         summary: recipe.summary,
         healthScore: recipe.healthScore,
-        steps: JSON.stringify(stepByStep(recipe.analyzedInstructions)),
+        steps: stepByStep(recipe.analyzedInstructions),
         image: recipe.image,
         dishTypes: recipe.dishTypes,
       };

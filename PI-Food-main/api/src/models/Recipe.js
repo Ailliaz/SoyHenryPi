@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
         },
       },
       steps: {
-        type: DataTypes.TEXT,
+        type: DataTypes.JSONB,
       },
       image: {
         type: DataTypes.STRING,

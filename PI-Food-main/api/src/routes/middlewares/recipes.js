@@ -64,7 +64,7 @@ router.get("/:id", async (req, res) => {
   if (!req.query.order) {
     order = "ASC";
   }
-  if (id / 1 === NaN)
+  if (isNaN(Number(id)))
     return res.status(400).json({ msg: "Id must be a number" });
   const { summary, healthScore, steps, image, dishTypes } = req.query;
   const attributes = details(summary, healthScore, steps, image, dishTypes);
