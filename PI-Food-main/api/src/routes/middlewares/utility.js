@@ -1,8 +1,12 @@
 const fetch = require("node-fetch");
 const { Recipe, Diet, Op } = require("../../db");
 const Recipe_Diet = require("../../models/Recipe_Diet");
+const { API_KEY } = process.env;
 
+//Mock Api
 _EXTERNAL_URL = "https://run.mocky.io/v3/64dfef83-658b-47e0-a079-8e106c0bc34a";
+//Spoonacular
+// _EXTERNAL_URL = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`;
 
 async function initializeDiet() {
   const diets = [

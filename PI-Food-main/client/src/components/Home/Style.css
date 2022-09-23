@@ -51,6 +51,13 @@ body {
   border: transparent;
 }
 
+.paginationCurrentBtn {
+  background-color: rgb(122, 30, 192, 0.6);
+  padding: 15px;
+  border: transparent;
+  border-color: rgb(245, 245, 245, 0.5);
+}
+
 .loading {
   display: flex;
   justify-content: center;

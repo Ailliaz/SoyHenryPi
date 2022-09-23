@@ -16,7 +16,7 @@ function searchRecipes(state, payload) {
 
 function searchId(state, payload) {
   const temp = state;
-  temp.details[0] = { ...payload };
+  temp.details = payload;
   return temp;
 }
 

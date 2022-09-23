@@ -19,8 +19,6 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
-
-const PORT = 3001;
 // Syncing all the models at once.
 // conn.sync({ force: false }).then(() => {
 //   server.listen(3001, () => {
@@ -30,8 +28,8 @@ const PORT = 3001;
 async function main() {
   try {
     await conn.sync({ force: false });
-    server.listen(PORT);
-    console.log("Server listening in port", PORT);
+    server.listen(process.env.PORT);
+    console.log("Server listening in port", process.env.PORT);
   } catch (error) {
     console.error("Unable to connect to the database", error);
   }

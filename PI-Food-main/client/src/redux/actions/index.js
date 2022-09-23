@@ -6,7 +6,7 @@ export const searchRecipes =
   (recipe, orderValue, filterValue, diets) => (dispatch) => {
     if (recipe === "") {
       return axios
-        .get(`http://localhost:3001/recipes/get`, {
+        .get(`recipes/get`, {
           params: {
             ...(orderValue !== "" ? { order: orderValue } : {}),
             ...(filterValue !== "" ? { filter: filterValue } : {}),
@@ -17,7 +17,7 @@ export const searchRecipes =
         .then((data) => dispatch({ type: SEARCH_RECIPES, payload: data }));
     } else {
       return axios
-        .get(`http://localhost:3001/recipes/`, {
+        .get(`recipes/`, {
           params: {
             name: recipe,
             ...(orderValue !== "" ? { order: orderValue } : {}),
@@ -33,7 +33,7 @@ export const searchRecipes =
 export const searchId = (id) => (dispatch) => {
   return axios
     .get(
-      `http://localhost:3001/recipes/${id}?summary=summary&steps=steps&healthScore=healthScore&image=image&dishTypes=dishTypes`
+      `recipes/${id}?summary=summary&steps=steps&healthScore=healthScore&image=image&dishTypes=dishTypes`
     )
     .then((response) => response.data)
     .then((data) => dispatch({ type: SEARCH_ID, payload: data }));

@@ -108,7 +108,7 @@ function CreateRecipe() {
       );
 
     axios
-      .post("http://localhost:3001/recipes", {
+      .post("recipes", {
         name: name,
         summary: summary,
         healthScore: healthScore.toString(),

@@ -1,21 +1,24 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Style.css";
 import { searchId } from "../../redux/actions";
-import { useEffect } from "react";
 
 export default function DetailsCard() {
   const dispatch = useDispatch();
-  const details = useSelector((state) => state.details[0]);
 
-  useEffect(() => {
-    dispatch(
+  const details = useSelector((state) => state.details);
+
+  async function startUp() {
+    await dispatch(
       searchId(
         window.location.href.substring(
           window.location.href.lastIndexOf("/") + 1
         )
       )
     );
-  }, [dispatch]);
+  }
+
+  if (details === undefined) startUp();
+
   console.log(details);
 
   // useEffect(() => {
@@ -32,7 +35,7 @@ export default function DetailsCard() {
   //   // }
   // }, []);
 
-  if (details === undefined)
+  if (details.name === undefined)
     return (
       <div className="cardDetails">
         <span className="noId">
@@ -87,7 +90,7 @@ export default function DetailsCard() {
           </div>
           <span className="steps">
             <span className="detailsColumns">
-              {details.steps !== undefined ? (
+              {details.steps !== "" ? (
                 details.steps.ingredients.map((ingredient) => (
                   <li key={ingredient} className="detailsList">
                     {ingredient}
@@ -103,7 +106,7 @@ export default function DetailsCard() {
           </div>
           <span className="steps">
             <span className="detailsColumns">
-              {details.steps !== undefined ? (
+              {details.steps !== "" ? (
                 details.steps.equipment.map((equipment) => (
                   <li key={equipment} className="detailsList">
                     {equipment}
@@ -118,7 +121,7 @@ export default function DetailsCard() {
             <strong>Step by step</strong>
           </span>
           <span className="steps">
-            {details.steps !== undefined ? (
+            {details.steps !== "" ? (
               details.steps.steps.map((step) => (
                 <li key={step} className="detailsList">
                   {step}
