@@ -38,6 +38,8 @@ img {
   font-size: 15px;
 }
 .image {
+  object-fit: cover;
+  height: 220px;
   width: 300px;
   margin: 5px;
   margin-bottom: 10px;

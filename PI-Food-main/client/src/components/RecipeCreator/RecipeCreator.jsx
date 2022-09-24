@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "./Style.css";
+import { urlValidator } from "./utility";
 
 function CreateRecipe() {
   const [name, setName] = useState("");
@@ -12,7 +13,7 @@ function CreateRecipe() {
   const [showIngedient, setShowIngredient] = useState("");
   const [equipment, setEquipment] = useState([]);
   const [showEquipment, setShowEquipment] = useState("");
-  const [image, setImage] = useState();
+  const [image, setImage] = useState("");
   const [diets, setDiets] = useState([]);
   const [dishTypes, setDishTypes] = useState([]);
   const [showDishTypes, setShowDishTypes] = useState("");
@@ -99,14 +100,20 @@ function CreateRecipe() {
     e.preventDefault();
     if (name === "" || summary === "")
       return alert("Name and summary are needed to create a new recipe");
+    if (name.split("").length > 250)
+      return alert("Names can not be this long ");
     if (healthScore > 100 || healthScore < 1)
       return alert("Health score must be between 1 and 100");
 
-    if (image === "")
-      setImage(
-        "https://www.food4fuel.com/wp-content/uploads/woocommerce-placeholder-600x600.png"
-      );
+    if (image.split("").length > 250)
+      return alert("The url for the image given is too long");
 
+    if (!urlValidator(image) && image !== "") {
+      setImage("");
+      return alert("Image given is not a valid url");
+    }
+
+    console.log(image);
     axios
       .post("recipes", {
         name: name,
@@ -120,11 +127,13 @@ function CreateRecipe() {
             ],
           },
         ],
-        image: image,
+        image:
+          image ||
+          "https://www.food4fuel.com/wp-content/uploads/woocommerce-placeholder-600x600.png",
         diets: diets,
       })
       .then((response) => alert("Recipe created successfully"))
-      .catch((err) => console.log(err));
+      .catch((err) => alert(`${name} is already in the database`));
     setName("");
     setSummary("");
     setDishTypes([]);
