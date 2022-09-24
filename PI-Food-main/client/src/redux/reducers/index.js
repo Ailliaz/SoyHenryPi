@@ -1,4 +1,4 @@
-import { SEARCH_ID, SEARCH_RECIPES } from "../actions";
+import { CLEAR_ID, SEARCH_ID, SEARCH_RECIPES } from "../actions";
 
 const initialState = {
   recipes: [],
@@ -23,6 +23,12 @@ function searchId(state, payload) {
   return temp;
 }
 
+function clearId(state, payload) {
+  const temp = state;
+  temp.details = payload;
+
+  return temp;
+}
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_RECIPES:
@@ -30,6 +36,9 @@ const rootReducer = (state = initialState, action) => {
 
     case SEARCH_ID:
       return searchId(state, action.payload);
+
+    case CLEAR_ID:
+      return clearId(state, action.payload);
 
     default:
       return state;

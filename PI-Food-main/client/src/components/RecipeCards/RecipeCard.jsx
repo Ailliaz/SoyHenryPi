@@ -1,11 +1,15 @@
 import React from "react";
 import "./Style.css";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearId } from "../../redux/actions";
 
 export default function RecipeCard(props) {
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const routeChange = () => {
+    dispatch(clearId());
     let path = `/recipe/${props.recipe.id}`;
     history.push(path);
   };

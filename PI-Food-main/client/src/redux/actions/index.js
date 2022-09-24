@@ -1,6 +1,7 @@
 const axios = require("axios");
 export const SEARCH_RECIPES = "SEARCH_RECIPES";
 export const SEARCH_ID = "SEARCH_ID";
+export const CLEAR_ID = "CLEAR_ID";
 
 export const searchRecipes =
   (recipe, orderValue, filterValue, diets) => (dispatch) => {
@@ -38,3 +39,10 @@ export const searchId = (id) => (dispatch) => {
     .then((response) => response.data)
     .then((data) => dispatch({ type: SEARCH_ID, payload: data }));
 };
+
+export function clearId() {
+  return {
+    type: CLEAR_ID,
+    payload: [],
+  };
+}
