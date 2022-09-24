@@ -27,7 +27,7 @@ const { conn } = require("./src/db.js");
 // });
 async function main() {
   try {
-    await conn.sync({ force: true });
+    await conn.sync({ force: false });
     server.listen(process.env.PORT);
     console.log("Server listening in port", process.env.PORT);
   } catch (error) {

@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Style.css";
 import { searchId } from "../../redux/actions";
-import { useState, useEffect } from "react";
-import axios from "axios";
 
 export default function DetailsCard() {
   const dispatch = useDispatch();
@@ -22,21 +20,6 @@ export default function DetailsCard() {
   }
 
   startUp(details);
-
-  console.log(details);
-
-  // useEffect(() => {
-  //   const fetchPost = async () => {
-  //     const url = window.location.href.substring(
-  //       window.location.href.lastIndexOf("/") + 1
-  //     );
-  //     const res = await axios.get(
-  //       `http://localhost:3001/recipes/${url}?summary=summary&steps=steps&healthScore=healthScore&image=image&dishTypes=dishTypes`
-  //     );
-  //     setDetails(res.data);
-  //   };
-  //   fetchPost();
-  // }, []);
 
   if (details.length === 0)
     return (
@@ -93,14 +76,14 @@ export default function DetailsCard() {
           </div>
           <span className="steps">
             <span className="detailsColumns">
-              {details.length !== 0 ? (
+              {details.length !== 0 && details.steps !== "" ? (
                 details.steps.ingredients.map((ingredient) => (
                   <li key={ingredient} className="detailsList">
                     {ingredient}
                   </li>
                 ))
               ) : (
-                <></>
+                <li>There are no ingredients for this recipe</li>
               )}
             </span>
           </span>
@@ -109,14 +92,14 @@ export default function DetailsCard() {
           </div>
           <span className="steps">
             <span className="detailsColumns">
-              {details.length !== 0 ? (
+              {details.length !== 0 && details.steps !== "" ? (
                 details.steps.equipment.map((equipment) => (
                   <li key={equipment} className="detailsList">
                     {equipment}
                   </li>
                 ))
               ) : (
-                <></>
+                <li>There are no equipments for this recipe</li>
               )}
             </span>
           </span>
@@ -124,14 +107,14 @@ export default function DetailsCard() {
             <strong>Step by step</strong>
           </span>
           <span className="steps">
-            {details.length !== 0 ? (
+            {details.length !== 0 && details.steps !== "" ? (
               details.steps.steps.map((step) => (
                 <li key={step} className="detailsList">
                   {step}
                 </li>
               ))
             ) : (
-              <></>
+              <li>There are no steps for this recipe</li>
             )}
           </span>
           <div className="title">

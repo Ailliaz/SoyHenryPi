@@ -8,7 +8,7 @@ const initialState = {
 function searchRecipes(state, payload) {
   const temp = {
     recipes: payload,
-    details: [...state.details],
+    details: state.details,
   };
 
   return temp;

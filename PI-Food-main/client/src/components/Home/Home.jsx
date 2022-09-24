@@ -205,6 +205,7 @@ function Home() {
           </div>
         </div>
       </div>
+
       <Post posts={currentPosts} loading={loading} />
       <Pagination
         postsPerPage={postsPerPage}
